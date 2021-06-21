@@ -1,0 +1,6 @@
+git仓库:http://apptest.wm1440.com:3000/1440/tusword_bg      账号：xuyiyong@1440.world   密码：?@Xyy19950628
+接口文档：http://apptest.wm1440.com:9090/group/22           账号：xuyiyong@1440.world   密码：disueb11
+后台管理(测试):http://tumantest.wm1440.com/#/login?redirect=%2Fhome
+H5(测试):http://test.1440.vip/
+H5(线上):http://www.1440.vip/
+代码更新：http://apptest.wm1440.com/test/git?password=123456

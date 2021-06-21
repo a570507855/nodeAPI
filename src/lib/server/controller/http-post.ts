@@ -13,7 +13,6 @@ function handleBefore(req: any, _: any, next: () => Promise<any>): Promise<void>
         const Api = require(`../../../api/${req.params.service}/${req.params.action}`)
             .default;
         req.Api.instance = Container.get<ApiBase>(Api);
-        Container.remove(Api);
         req.Api.validationMetadatas = getMetadataStorage().getTargetValidationMetadatas(Api, '', true, false);
     } catch (err) {
         req.Api.err = err;
@@ -63,11 +62,13 @@ export class HttpPostController {
                     throw new ApiError(ErrCode.JieKouCanShu);
                 }
             }
+            console.log(3333)
             return {
                 err: 0,
                 data: await api.invoke(),
             };
         } catch (ex) {
+            console.log(ex)
             if (ex.constructor == ApiError) {
                 const err = ex as ApiError;
                 return {
@@ -77,7 +78,7 @@ export class HttpPostController {
             }
             return {
                 err: ErrCode.YiChang,
-                data: '',
+                data: ex.message,
             };
         }
     }
