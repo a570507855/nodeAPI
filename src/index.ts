@@ -1,8 +1,6 @@
 var exec = require('child_process').exec;
 import iconv from 'iconv-lite';
-import fs from 'fs'
-console.log(111)
-// show  Windows letter
+// show  Windowsd letter
 function cmd(command: string, callback: Function) {
   exec(command, { encoding: 'buffer' }, (err: Error, stdout: any, stderr: Buffer) => {
     if (err || stderr.length) {
