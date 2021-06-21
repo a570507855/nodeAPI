@@ -1,16 +1,16 @@
-var exec = require('child_process').exec;
-import iconv from 'iconv-lite';
-// show  Windowsd letter
-function cmd(command: string, callback: Function) {
-  exec(command, { encoding: 'buffer' }, (err: Error, stdout: any, stderr: Buffer) => {
-    if (err || stderr.length) {
-      console.log(iconv.decode(stderr, 'cp936'));
-      return;
-    }
+import 'reflect-metadata';
+import express from 'express';
+import { useContainer, useExpressServer } from 'routing-controllers';
+import { HttpPostController, HttpGetController } from './lib/server/controller'
+import { Log } from './lib/os/log';
+import Container from 'typedi';
 
-    callback(iconv.decode(stdout, 'cp936'));
-  })
-}
-cmd('node -v', (res: any) => {
-  console.log(res)
-})
+const app = express();
+useContainer(Container);
+useExpressServer(app, { controllers: [HttpPostController, HttpGetController] }).listen(8888, () => {
+  Log.debug('服务已启动：', 'http://127.0.0.1:8888/')
+});
+
+
+
+
