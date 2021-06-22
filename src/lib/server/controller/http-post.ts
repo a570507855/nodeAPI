@@ -62,9 +62,8 @@ export class HttpPostController {
                     throw new ApiError(ErrCode.JieKouCanShu);
                 }
             }
-            console.log(3333)
             return {
-                err: 0,
+                status: 0,
                 data: await api.invoke(),
             };
         } catch (ex) {
@@ -72,13 +71,13 @@ export class HttpPostController {
             if (ex.constructor == ApiError) {
                 const err = ex as ApiError;
                 return {
-                    err: err.code,
-                    data: err.message,
+                    status: err.code,
+                    errmsg: err.message,
                 };
             }
             return {
-                err: ErrCode.YiChang,
-                data: ex.message,
+                status: ErrCode.YiChang,
+                errmsg: ex.message,
             };
         }
     }

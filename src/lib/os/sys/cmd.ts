@@ -11,7 +11,6 @@ export async function cmd(command: string): Promise<string> {
             if (err || stderr.length) {
                 reject(new Error(outerr));
             }
-            console.log(out)
             resolve(out);
         });
     });
