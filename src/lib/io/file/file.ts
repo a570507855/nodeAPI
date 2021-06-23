@@ -18,7 +18,7 @@ export class File {
         try {
             let files = await readdir(dir);
             let res = await files.reduce(async (memo: any, item) => {
-                let filePath = `${dir}/${item}`;
+                let filePath = `${dir}\\${item}`;
                 let _memo = await memo;
                 let isDir = (await stat(filePath)).isDirectory();
                 _memo.push({

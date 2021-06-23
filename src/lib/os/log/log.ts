@@ -23,9 +23,10 @@ export class Log {
     }
 
     private static log(type: string, message: string) {
-        let nowDate = new Date().toLocaleDateString();
-        let dir = `${process.cwd()}/log`
-        let fileName = `${dir}/${nowDate}.txt`;
+        let date = new Date();
+        let nowDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        let dir = `${process.cwd()}\\log`
+        let fileName = `${dir}\\${nowDate}.txt`;
         let content = `[${new Date().toLocaleString()}] [${type}]：` + message + '\n';
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
@@ -34,6 +35,7 @@ export class Log {
             fs.appendFileSync(fileName, content);
         }
         else {
+
             fs.writeFileSync(fileName, content);
         }
     }

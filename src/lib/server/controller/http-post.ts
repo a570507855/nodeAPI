@@ -1,19 +1,40 @@
 import { getMetadataStorage, validate } from "class-validator";
 import { ValidationMetadata } from "class-validator/types/metadata/ValidationMetadata";
-import { Body, JsonController, Post, Req, UseAfter, UseBefore } from "routing-controllers";
+import { Body, JsonController, Post, Req, UploadedFiles, UseAfter, UseBefore } from "routing-controllers";
 import Container, { Service } from "typedi";
 import { ErrCode } from "../../../model/enum";
 import { ApiBase, ApiError } from "../../net";
 import { Log } from "../../os/log";
+import multer from 'multer';
+
+async function getFile(req: any, _: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const upload = multer().array('files', 1000);
+        upload(req, _, err => {
+            if (!err) {
+                resolve({
+                    files: req.files,
+                    query: req.query,
+                });
+            }
+            else {
+                reject(err);
+            }
+        })
+    })
+}
 
 //拦截器 - 前
-function handleBefore(req: any, _: any, next: () => Promise<any>): Promise<void> {
+async function handleBefore(req: any, _: any, next: () => Promise<any>): Promise<void> {
     req.Api = {};
     try {
         const Api = require(`../../../api/${req.params.service}/${req.params.action}`)
             .default;
         req.Api.instance = Container.get<ApiBase>(Api);
         req.Api.validationMetadatas = getMetadataStorage().getTargetValidationMetadatas(Api, '', true, false);
+        let res = await getFile(req, _);
+        req.Api.instance.$files = res.files;
+        req.Api.instance.$query = res.query;
     } catch (err) {
         req.Api.err = err;
     }
@@ -31,6 +52,7 @@ async function handleAfter(req: any, _: any, next: () => Promise<any>): Promise<
 }
 
 @JsonController()
+@UploadedFiles('files')
 @Service()
 export class HttpPostController {
     @Post('/:service/:action')
