@@ -1,7 +1,24 @@
-import { readdir, readFile, stat } from 'fs/promises';
+import { readdir, readFile, stat, mkdir } from 'fs/promises';
 import path from 'path';
 
 export class File {
+
+    /**
+     * 创建文件夹，目录已存在则返回false,否则创建该目录
+     */
+    public async mkdir(dir: string): Promise<boolean> {
+        try {
+            await mkdir(dir);
+            return true;
+        } catch (err) {
+            if (err && err.errno === -4075) {
+                return false;
+            }
+            else {
+                throw err;
+            }
+        }
+    }
 
     public async readFile(path: string) {
         try {

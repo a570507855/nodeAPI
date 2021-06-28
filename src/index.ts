@@ -4,6 +4,7 @@ import { useContainer, useExpressServer } from 'routing-controllers';
 import { HttpPostController, HttpGetController } from './lib/server/controller'
 import { Log } from './lib/os/log';
 import Container from 'typedi';
+
 const cors = require('cors');
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(cors(corsOptions));
 
 useContainer(Container);
 useExpressServer(app, { controllers: [HttpPostController, HttpGetController] }).listen(8888, () => {
-  Log.debug('服务已启动：', 'localhost:8888/')
+  Log.debug('服务已启动：', 'http://localhost:8888/')
 });
 
 
